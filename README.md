@@ -25,6 +25,8 @@ may find of interest.
 
 ```java
 import io.github.startsmercury.glomphosche.impl.client.GlomphoscheImpl;
+import io.github.startsmercury.glomphosche.impl.client.node.DiscreteNode;
+import io.github.startsmercury.glomphosche.impl.client.node.hangul_jamo.composable.ComposableHangulJamoNode;
 import net.minecraft.network.chat.FontDescription;
 
 class Example
@@ -39,10 +41,10 @@ GlomphoscheImpl.ROOT
     .add(new ComposableHangulJamoNode());
 
 // the letter 'f'
-Node node1 = GlomphoscheImpl.LOOKUP
+DiscreteNode node1 = GlomphoscheImpl.LOOKUP
     .computeDiscreteIfAbsent('f');
 // the theoretical glyph 'fi'
-Node node2 = node1.getOrCreate('i');
+DiscreteNode node2 = node1.getOrCreate('i');
 // register the font that retextures 'f' as the glyph representing 'fi'
 node2.register(FontDescription.DEFAULT); // replace with your own
 

@@ -49,7 +49,8 @@ dependencies {
     mappings(loom.officialMojangMappings())
     modImplementation(libs.fabric.loader)
 
-    modRuntimeOnly(fabricApi.module("fabric-resource-loader-v0", libs.versions.fabric.api.get()))
+    modImplementation(fabricApi.module("fabric-resource-loader-v0", libs.versions.fabric.api.get()))
+    include(fabricApi.module("fabric-resource-loader-v0", libs.versions.fabric.api.get()))
 }
 
 tasks {

@@ -1,0 +1,44 @@
+{
+    "schemaVersion": 1,
+    "id": "glomphosche",
+    "version": "${version}",
+
+    "name": "Glomphosche",
+    "description": "Combined glyphs can you believe it?!",
+    "authors": [
+        {
+            "name": "StartsMercury",
+            "contact": {
+                "homepage": "https://github.com/StartsMercury"
+            }
+        }
+    ],
+    "contributors": [],
+    "contact": {
+        "homepage": "https://modrinth.com/mod/glomphosche",
+        "sources": "https://github.com/StartsMercury/glomphosche",
+        "issues": "https://github.com/StartsMercury/glomphosche/issues"
+    },
+
+    "license": "MIT",
+    "icon": "assets/glomphosche/icon.png",
+
+    "environment": "client",
+    "entrypoints": {},
+    "custom": {
+        "modmenu": {
+            "links": {
+                "modmenu.github_releases": "https://github.com/StartsMercury/glomphosche/releases",
+                "modmenu.modrinth": "https://modrinth.com/mod/glomphosche"
+            }
+        }
+    },
+    "mixins": [
+        "glomphosche.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.17",
+        "java": ">=${javaVersion}",
+        "minecraft": "*"
+    }
+}

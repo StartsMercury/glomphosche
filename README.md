@@ -42,19 +42,22 @@ GlomphoscheImpl.ROOT
 
 // the letter 'f'
 DiscreteNode node1 = GlomphoscheImpl.LOOKUP
-    .computeDiscreteIfAbsent('f');
+    .computeDiscreteIfAbsent('f')
+    .first();
 // the theoretical glyph 'fi'
-DiscreteNode node2 = node1.getOrCreate('i');
+DiscreteNode node2 = node1
+    .computeDiscreteIfAbsent('i')
+    .first();
 // register the font that retextures 'f' as the glyph representing 'fi'
-node2.register(FontDescription.DEFAULT); // replace with your own
+node2.fontOverride(FontDescription.DEFAULT); // replace with your own
 
 // This one is for 'ffi' by retexturing 'f'
 GlomphoscheImpl.ROOT
-    .getOrCreate('f')
-    .getOrCreate('f')
-    .getOrCreate('i')
+    .computeDiscreteIfAbsent('f').first()
+    .computeDiscreteIfAbsent('f').first()
+    .computeDiscreteIfAbsent('i').first()
     // replace with your own
-    .register(FontDescription.DEFAULT);
+    .fontOverride(FontDescription.DEFAULT);
 }
 
 }

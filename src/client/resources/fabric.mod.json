@@ -37,8 +37,12 @@
         "glomphosche.mixins.json"
     ],
     "depends": {
+        "fabric-resource-loader-v0": "*",
         "fabricloader": ">=0.17",
         "java": ">=${javaVersion}",
         "minecraft": "*"
+    },
+    "recommends": {
+        "minecraft": "${gameVersion}"
     }
 }

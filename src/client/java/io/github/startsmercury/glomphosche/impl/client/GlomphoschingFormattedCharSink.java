@@ -1,7 +1,8 @@
 package io.github.startsmercury.glomphosche.impl.client;
 
-import static io.github.startsmercury.glomphosche.impl.client.GlomphoscheImpl.EMPTY_FONT;
-
+import io.github.startsmercury.glomphosche.impl.client.font.EmptyFont;
+import io.github.startsmercury.glomphosche.impl.client.font.ReplaceGlyphFont;
+import io.github.startsmercury.glomphosche.impl.client.node.Node;
 import it.unimi.dsi.fastutil.objects.ObjectArrayFIFOQueue;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
@@ -18,24 +19,24 @@ import net.minecraft.util.FormattedCharSink;
  */
 public final class GlomphoschingFormattedCharSink implements AutoCloseable, FormattedCharSink {
     private final FormattedCharSink sink;
-    private final GlomphoscheNode root;
+    private final Node root;
 
     private ObjectList<Capture> captures = new ObjectArrayList<>();
-    private Optional<FontDescription.Resource> candidate = Optional.empty();
+    private Optional<Node> candidate = Optional.empty();
     private boolean success = true;
-    private GlomphoscheNode tail;
+    private Node tail;
     private int index;
 
     // Use unused font as initial cache mapping. Cant predict the mapped font.
-    private FontDescription.Resource cachedFont = EMPTY_FONT;
+    private FontDescription cachedFont = EmptyFont.instance();
     private Style cachedFirstStyle = Style.EMPTY.withFont(cachedFont);
     private Style mappedFirstStyle = cachedFirstStyle;
 
     // For this, pre-initializing this actually makes sense.
     private Style cachedPartStyle = Style.EMPTY;
-    private Style mappedPartStyle = cachedPartStyle.withFont(EMPTY_FONT);
+    private Style mappedPartStyle = cachedPartStyle.withFont(EmptyFont.instance());
 
-    public GlomphoschingFormattedCharSink(final FormattedCharSink sink, final GlomphoscheNode root) {
+    public GlomphoschingFormattedCharSink(final FormattedCharSink sink, final Node root) {
         this.sink = sink;
         this.root = root;
 
@@ -68,13 +69,13 @@ public final class GlomphoschingFormattedCharSink implements AutoCloseable, Form
         final var index = captures.size();
         captures.add(capture);
 
-        final var node = this.tail.get(capture.codepoint);
+        final var node = this.tail.visit(capture.codepoint);
         if (node.isEmpty()) {
             return this.pass(captures, success);
         } else {
             final var tail = node.get();
-            if (tail.getFont().isPresent()) {
-                this.candidate = tail.getFont();
+            if (tail.hasOverrides()) {
+                this.candidate = node;
                 this.index = index;
             }
             this.tail = tail;
@@ -142,16 +143,28 @@ public final class GlomphoschingFormattedCharSink implements AutoCloseable, Form
 
     private boolean forwardFirstGlomphosched(
         final Capture first,
-        final FontDescription.Resource font,
+        final Node node,
         final boolean success
     ) {
         final Style mappedStyle;
-        if (font == this.cachedFont && first.style == this.cachedFirstStyle) {
-            mappedStyle = this.mappedFirstStyle;
+        if (node.getCodepointOverride().isPresent()) {
+            mappedStyle = first.style.withFont(new ReplaceGlyphFont(
+                node.getCodepointOverride().getAsInt(),
+                node.getFontOverride().orElse(first.style.getFont())
+            ));
         } else {
-            this.cachedFont = font;
-            this.cachedFirstStyle = first.style;
-            mappedStyle = this.mappedFirstStyle = first.style.withFont(font);
+            // Since this node was a candidate, either codepoint or font
+            // override must be present, and since we eliminated the latter,
+            // then it must be that the former is present.
+            assert node.getFontOverride().isPresent();
+            final var font = node.getFontOverride().get();
+            if (font == this.cachedFont && first.style == this.cachedFirstStyle) {
+                mappedStyle = this.mappedFirstStyle;
+            } else {
+                this.cachedFont = font;
+                this.cachedFirstStyle = first.style;
+                mappedStyle = this.mappedFirstStyle = first.style.withFont(font);
+            }
         }
         return success && this.forward(first.position, mappedStyle, first.codepoint);
     }
@@ -168,7 +181,7 @@ public final class GlomphoschingFormattedCharSink implements AutoCloseable, Form
             final var capture = captures.get(i);
             if (capture.style != cachedStyle) {
                 cachedStyle = capture.style;
-                mappedStyle = capture.style.withFont(EMPTY_FONT);
+                mappedStyle = capture.style.withFont(EmptyFont.instance());
             }
             success = success && this.forward(capture.position, mappedStyle, capture.codepoint);
         }

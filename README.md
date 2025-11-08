@@ -4,43 +4,61 @@ A mod that *'hacks'* in composed glyphs since `char`s weren't enough.
 
 ## Alpha Usage
 
-This mod is currently in Alpha testing. The vital feature is realized, that is
-a system that could somehow combine characters or codepoints into a singular
-glyph.
+This mod is currently in Alpha testing. The composition system is already
+working, though needing polishing and possibly improved capabilities that can be
+built on top with.
 
-Currently, only Baybayin, also known as the Tagalog script in Unicode, is
-pre-included and there currently is no convenient way to register additional
-sequences aside from creating a helper mod. You also need to somehow have the
-capability to enter Tagalog/Baybayin characters, either using a keyboard mapper
-or simply find one that can convert Latin strings into Tagalog/Baybayin.
+Currently, supports the Baybayin script, or the characters in the Tagalog
+Unicode block, specifically vowel markers above and below the consonants as well
+as the vowel cancellers; treat letter + markers as one glyph. This also replaces
+the character textures to this mod's custom ones.
 
-You may register the first level characters with Minecraft's default font or
-your own if it'll work better for what you are achieving. Do note that you want
-to retexture the <u>first</u> character and likely use separate textures. You
-are required to already know how to manage fonts through vanilla Minecraft\
-resource packs.
+Since `0.2.0`, support for composing modern Hangul Jamo into Hangul syllables.
+This only supports modern jamo and follows the composition calculation to map
+proper jamo sequences to pre-composed Unicode characters. 
+
+## Technicals
+
+The internals are still being polished. You can check the first few lines of
+the `GlomphoscheImpl` class and even the mentioned `Node` classes there that you
+may find of interest.
 
 ```java
+import io.github.startsmercury.glomphosche.impl.client.GlomphoscheImpl;
+import net.minecraft.network.chat.FontDescription;
+
+class Example
+{
+
+void initialize()
+{
+// register modern Hangul Jamo handler, or your own handler
+// for a different use, if you implemented one
+GlomphoscheImpl.ROOT
+    .inner()
+    .add(new ComposableHangulJamoNode());
+
 // the letter 'f'
-var node1 = GlomphoscheImpl.ROOT.getOrCreate('f');
+Node node1 = GlomphoscheImpl.LOOKUP
+    .computeDiscreteIfAbsent('f');
 // the theoretical glyph 'fi'
-var node2 = node1.getOrCreate('i');
+Node node2 = node1.getOrCreate('i');
 // register the font that retextures 'f' as the glyph representing 'fi'
-node2.register(/* FontDescription.Source here */);
+node2.register(FontDescription.DEFAULT); // replace with your own
 
 // This one is for 'ffi' by retexturing 'f'
 GlomphoscheImpl.ROOT
     .getOrCreate('f')
     .getOrCreate('f')
     .getOrCreate('i')
-    .register(/* FontDescription.Source here */);
+    // replace with your own
+    .register(FontDescription.DEFAULT);
+}
+
+}
 ```
 
 The shortest path to test with an editable text box is through the *Add Server*
 screen found in `Title Screen > Multiplayer > Add Server`.
 
-![](.github/tglg.png)
-![](.github/tglg_ii.png)
-![](.github/tglg_uo.png)
-![](.github/tglg_krus.png)
 ![](.github/tglg_pamudpod.png)

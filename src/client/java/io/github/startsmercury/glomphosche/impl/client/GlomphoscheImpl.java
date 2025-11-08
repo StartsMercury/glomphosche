@@ -1,5 +1,9 @@
 package io.github.startsmercury.glomphosche.impl.client;
 
+import io.github.startsmercury.glomphosche.impl.client.node.BasicRootNode;
+import io.github.startsmercury.glomphosche.impl.client.node.CompositeNode;
+import io.github.startsmercury.glomphosche.impl.client.node.DiscreteNode;
+import io.github.startsmercury.glomphosche.impl.client.node.hangul_jamo.composable.ComposableHangulJamoNode;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.network.chat.FontDescription;
@@ -8,21 +12,34 @@ import net.minecraft.resources.ResourceLocation;
 // TODO: consider API and or registering through resource packs
 public class GlomphoscheImpl {
     /**
-     * The chomposing root.
+     * The root composite node.
      * <p>
-     * Character composing involves changing the font of the starting codepoint.
-     * Successive restyling must be different fonts for the same starting
-     * codepoint to achieve the desired effect. If so convenient, group the same
-     * modification in the same font definition.
+     * This the most technical node and combines the {@code LOOKUP} and possibly
+     * other types of nodes as one root, that is, fallbacks. Visit attempts are
+     * done from first added to last, which means, {@code LOOKUP}, by default,
+     * is checked first.
+     *
+     * @see #LOOKUP
      */
-    public static final GlomphoscheNode ROOT = new GlomphoscheNode();
+    public static final BasicRootNode<CompositeNode> ROOT = new BasicRootNode<>(new CompositeNode());
 
-    public static final FontDescription.Resource EMPTY_FONT = new FontDescription.Resource(ResourceLocation.fromNamespaceAndPath("glomphosche", "empty"));
+    /**
+     * The lookup co-root node.
+     * <p>
+     * This is the simplest you can get your own nodes registered. Each
+     * registration will map to one codepoint, further registration on that node
+     * will represent a codepoint sequence to match and will match and consume
+     * that sequence when you register either one or both override types.
+     */
+    public static final DiscreteNode LOOKUP = new DiscreteNode();
 
     static {
+        ROOT.inner().add(LOOKUP);
+        ROOT.inner().add(new ComposableHangulJamoNode());
+
         final var tglg = new FontDescription.Resource(ResourceLocation.fromNamespaceAndPath("glomphosche", "tagalog/default"));
         for (var cp = 0x1712; cp <= 0x1715; cp++) {
-            ROOT.getOrCreate(cp).register(tglg);
+            LOOKUP.computeDiscreteIfAbsent(cp).first().fontOverride(tglg);
         }
 
         final var tglgIi = new FontDescription.Resource(ResourceLocation.fromNamespaceAndPath("glomphosche", "tagalog/ii"));
@@ -31,16 +48,13 @@ public class GlomphoscheImpl {
         final var tglgPamudpod = new FontDescription.Resource(ResourceLocation.fromNamespaceAndPath("glomphosche", "tagalog/pamudpod"));
 
         "ᜀᜁᜂᜃᜄᜅᜆᜇᜈᜉᜊᜋᜌᜍᜎᜏᜐᜑᜟ".codePoints().forEach(cp -> {
-            final var node = ROOT.getOrCreate(cp);
-            node.register(tglg);
-            node.getOrCreate(0x1712).register(tglgIi);
-            node.getOrCreate(0x1713).register(tglgUo);
-            node.getOrCreate(0x1714).register(tglgKrus);
-            node.getOrCreate(0x1715).register(tglgPamudpod);
+            final var node = LOOKUP.computeDiscreteIfAbsent(cp).first();
+            node.fontOverride(tglg);
+            node.computeDiscreteIfAbsent(0x1712).first().fontOverride(tglgIi);
+            node.computeDiscreteIfAbsent(0x1713).first().fontOverride(tglgUo);
+            node.computeDiscreteIfAbsent(0x1714).first().fontOverride(tglgKrus);
+            node.computeDiscreteIfAbsent(0x1715).first().fontOverride(tglgPamudpod);
         });
-
-        // Test node traversal without match
-        // ROOT.getOrCreate('ᜊ').getOrCreate('ᜊ');
     }
 
     public static int moveCursorSkipZeroWidths(

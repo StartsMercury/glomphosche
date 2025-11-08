@@ -1,6 +1,6 @@
 object Constants {
     const val MOD_NAME: String = "Glomphosche"
-    const val MOD_VERSION: String = "0.1.0"
+    const val MOD_VERSION: String = "0.2.0"
 }
 
 plugins {

@@ -4,9 +4,14 @@
     "package": "io.github.startsmercury.glomphosche.mixin.client",
     "compatibilityLevel": "JAVA_21",
     "client": [
+        "AbstractSignEditScreenMixin",
         "EditBoxMixin",
         "FontMixin",
-        "StringDecomposerMixin"
+        "MultilineTextFieldMixin",
+        "StringDecomposerMixin",
+        "StringSplitter$LineBreakFinderMixin",
+        "StringSplitterMixin",
+        "TextFieldHelperMixin"
     ],
     "injectors": {
         "defaultRequire": 1

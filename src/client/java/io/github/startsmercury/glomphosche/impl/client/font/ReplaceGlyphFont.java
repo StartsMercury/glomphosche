@@ -1,5 +1,7 @@
 package io.github.startsmercury.glomphosche.impl.client.font;
 
+import java.util.Optional;
+import java.util.OptionalInt;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.Style;
 
@@ -12,8 +14,18 @@ import net.minecraft.network.chat.Style;
  * This font description also stores another font description since it will
  * replace the pre-existing value in {@code Style.font}.
  * @param codepoint  The codepoint override.
- * @param font  The replacement font though this often is the original font.
+ * @param font  The replacement font.
+ * @param original  The original font; may be useful.
  * @see Style#getFont()
  */
-public record ReplaceGlyphFont(int codepoint, FontDescription font) implements FontDescription {
+public record ReplaceGlyphFont(
+    OptionalInt codepoint,
+    Optional<FontDescription> font,
+    FontDescription original
+) implements FontDescription {
+    public ReplaceGlyphFont {
+        if (codepoint.isEmpty() && font.isEmpty()) {
+            throw new IllegalArgumentException("Parameters codepoint and font must not be both empty");
+        }
+    }
 }

@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayFIFOQueue;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import java.util.Optional;
+import java.util.OptionalInt;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSink;
@@ -103,8 +104,12 @@ public final class GlomphoschingFormattedCharSink implements AutoCloseable, Form
             }
             success = result.success;
         } while (!deque.isEmpty());
+    }
 
+    public boolean pop() {
+        final var success = this.success;
         this.success = true;
+        return success;
     }
 
     private CatchOrPass pass(final ObjectList<Capture> captures, final boolean success) {
@@ -149,8 +154,9 @@ public final class GlomphoschingFormattedCharSink implements AutoCloseable, Form
         final Style mappedStyle;
         if (node.getCodepointOverride().isPresent()) {
             mappedStyle = first.style.withFont(new ReplaceGlyphFont(
-                node.getCodepointOverride().getAsInt(),
-                node.getFontOverride().orElse(first.style.getFont())
+                node.getCodepointOverride(), // This is not empty
+                node.getFontOverride(),
+                first.style.getFont()
             ));
         } else {
             // Since this node was a candidate, either codepoint or font
@@ -163,7 +169,13 @@ public final class GlomphoschingFormattedCharSink implements AutoCloseable, Form
             } else {
                 this.cachedFont = font;
                 this.cachedFirstStyle = first.style;
-                mappedStyle = this.mappedFirstStyle = first.style.withFont(font);
+                mappedStyle = this.mappedFirstStyle = first.style.withFont(
+                    new ReplaceGlyphFont(
+                        OptionalInt.empty(),
+                        Optional.of(font),
+                        first.style.getFont()
+                    )
+                );
             }
         }
         return success && this.forward(first.position, mappedStyle, first.codepoint);

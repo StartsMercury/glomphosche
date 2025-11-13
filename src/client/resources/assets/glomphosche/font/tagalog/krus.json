@@ -2,7 +2,7 @@
     "providers": [
         {
             "type": "bitmap",
-            "file": "glomphosche:font/tglg_krus.png",
+            "file": "glomphosche:font/tagalog/krus.png",
             "height": 12,
             "ascent": 9,
             "chars": [

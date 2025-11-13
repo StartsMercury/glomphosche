@@ -2,7 +2,7 @@
     "providers": [
         {
             "type": "bitmap",
-            "file": "glomphosche:font/tglg_pamudpod.png",
+            "file": "glomphosche:font/tagalog/pamudpod.png",
             "height": 12,
             "ascent": 9,
             "chars": [

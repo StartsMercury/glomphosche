@@ -2,7 +2,7 @@
     "providers": [
         {
             "type": "bitmap",
-            "file": "glomphosche:font/tglg_uo.png",
+            "file": "glomphosche:font/tagalog/uo.png",
             "height": 12,
             "ascent": 9,
             "chars": [

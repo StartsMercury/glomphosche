@@ -2,7 +2,7 @@
     "providers": [
         {
             "type": "bitmap",
-            "file": "glomphosche:font/tglg_ii.png",
+            "file": "glomphosche:font/tagalog/ii.png",
             "height": 12,
             "ascent": 9,
             "chars": [

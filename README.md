@@ -41,21 +41,17 @@ GlomphoscheImpl.ROOT
     .add(new ComposableHangulJamoNode());
 
 // the letter 'f'
-DiscreteNode node1 = GlomphoscheImpl.LOOKUP
-    .computeDiscreteIfAbsent('f')
-    .first();
+DiscreteNode node1 = GlomphoscheImpl.LOOKUP.withDiscrete('f');
 // the theoretical glyph 'fi'
-DiscreteNode node2 = node1
-    .computeDiscreteIfAbsent('i')
-    .first();
+DiscreteNode node2 = node1.withDiscrete('i');
 // register the font that retextures 'f' as the glyph representing 'fi'
 node2.fontOverride(FontDescription.DEFAULT); // replace with your own
 
 // This one is for 'ffi' by retexturing 'f'
 GlomphoscheImpl.ROOT
-    .computeDiscreteIfAbsent('f').first()
-    .computeDiscreteIfAbsent('f').first()
-    .computeDiscreteIfAbsent('i').first()
+    .withDiscrete('f')
+    .withDiscrete('f')
+    .withDiscrete('i')
     // replace with your own
     .fontOverride(FontDescription.DEFAULT);
 }
@@ -66,4 +62,4 @@ GlomphoscheImpl.ROOT
 The shortest path to test with an editable text box is through the *Add Server*
 screen found in `Title Screen > Multiplayer > Add Server`.
 
-![](.github/tglg_pamudpod.png)
+![](.github/hano_ambahan.png)

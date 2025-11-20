@@ -4,14 +4,15 @@
     "package": "io.github.startsmercury.glomphosche.mixin.client",
     "compatibilityLevel": "JAVA_21",
     "client": [
-        "AbstractSignEditScreenMixin",
-        "EditBoxMixin",
-        "FontMixin",
-        "MultilineTextFieldMixin",
-        "StringDecomposerMixin",
-        "StringSplitter$LineBreakFinderMixin",
-        "StringSplitterMixin",
-        "TextFieldHelperMixin"
+        "editor.AbstractSignEditScreenMixin",
+        "editor.EditBoxMixin",
+        "editor.MultilineTextFieldMixin",
+        "editor.TextFieldHelperMixin",
+        "extension.MinecraftMixin",
+        "glyph.FontMixin",
+        "glyph.StringDecomposerMixin",
+        "glyph.StringSplitter$LineBreakFinderMixin",
+        "glyph.StringSplitterMixin"
     ],
     "injectors": {
         "defaultRequire": 1

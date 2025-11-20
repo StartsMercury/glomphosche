@@ -1,0 +1,11 @@
+{
+    "pack": {
+        "description": {
+            "type": "translatable",
+            "translate": "glomphosche.resourcePack.glomphosche-tglg.description"
+        },
+        "pack_format": ${packFormatLegacy},
+        "min_format": ${packFormat},
+        "max_format": ${packFormat}
+    }
+}

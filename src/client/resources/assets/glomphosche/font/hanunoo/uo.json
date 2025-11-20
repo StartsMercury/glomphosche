@@ -1,14 +1,8 @@
 {
     "providers": [
         {
-            "type": "bitmap",
-            "file": "glomphosche:font/hanunoo/uo.png",
-            "height": 12,
-            "ascent": 9,
-            "chars": [
-                "\u1720\u1721\u1722\u1723\u1724\u1725\u1726\u1727\u1728\u1729\u172a\u172b\u172c\u172d\u172e\u172f",
-                "\u1730\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
-            ]
+            "type": "unihex",
+            "hex_file": "glomphosche:font/hanunoo/uo.zip"
         }
     ]
 }

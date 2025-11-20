@@ -1,0 +1,10 @@
+{
+    "modmenu.nameTranslation.glomphosche": "Glomphosche",
+    "modmenu.descriptionTranslation.glomphosche": "View composed glyphs or ligatures in Minecraft. Glomphosche is a simple mod that visually ligates or compose supported character or Unicode code point sequences into supported ligatures.",
+
+    "glomphosche.resourcePack.glomphosche-hnno.name": "Hanuno'o Block (Custom)",
+    "glomphosche.resourcePack.glomphosche-hnno.description": "Custom font style by Glomphosche!",
+
+    "glomphosche.resourcePack.glomphosche-tglg.name": "Tagalog Block (Custom)",
+    "glomphosche.resourcePack.glomphosche-tglg.description": "Custom font style by Glomphosche!"
+}

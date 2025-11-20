@@ -24,13 +24,22 @@
     "icon": "assets/glomphosche/icon.png",
 
     "environment": "client",
-    "entrypoints": {},
+    "entrypoints": {
+        "client": [
+            "io.github.startsmercury.glomphosche.impl.client.entrypoint.GlomphoscheFabric"
+        ]
+    },
     "custom": {
         "modmenu": {
             "links": {
                 "modmenu.github_releases": "https://github.com/StartsMercury/glomphosche/releases",
                 "modmenu.modrinth": "https://modrinth.com/mod/glomphosche"
             }
+        },
+        "loom:injected_interfaces": {
+            "net/minecraft/class_310": [
+                "io/github/startsmercury/glomphosche/impl/client/extension/compile/CompileGlomphoscheAware"
+            ]
         }
     },
     "mixins": [

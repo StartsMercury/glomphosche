@@ -2,6 +2,7 @@ package io.github.startsmercury.glomphosche.impl.client;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.StringDecomposer;
 
@@ -14,7 +15,7 @@ public class TextTraverser {
     public void invalidatePositions(final String value) {
         this.positions = CompletableFuture.supplyAsync(() -> {
             final var posSink = new FormattedCharPosSink();
-            try (final var glomphoscheSink = new GlomphoschingFormattedCharSink(posSink, GlomphoscheImpl.ROOT)) {
+            try (final var glomphoscheSink = Minecraft.getInstance().getGlomphosche().forSink(posSink)) {
                 StringDecomposer.iterate(value, Style.EMPTY, glomphoscheSink);
             }
             return posSink.positions().toIntArray();

@@ -4,6 +4,7 @@ fabric-loader = "0.18.0"
 fabric-minecraft = "1.21.10"
 java = "21"
 minecraft = "1.21.10"
+mcpackformat = "69.0"
 modmenu = "16.0.0-rc.1"
 
 [libraries]

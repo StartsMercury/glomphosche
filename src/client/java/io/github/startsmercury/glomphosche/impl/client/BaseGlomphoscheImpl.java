@@ -15,7 +15,7 @@ import net.minecraft.util.FormattedCharSink;
 class BaseGlomphoscheImpl {
     private static final String MODID = "glomphosche";
 
-    static ResourceLocation withDefaultNamespace(final String path) {
+    public static ResourceLocation withDefaultNamespace(final String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 

@@ -2,7 +2,7 @@ package io.github.startsmercury.glomphosche.impl.client;
 
 import io.github.startsmercury.glomphosche.impl.client.node.BasicNode;
 import io.github.startsmercury.glomphosche.impl.client.node.ConditionalNode;
-import io.github.startsmercury.glomphosche.impl.client.node.hangul_jamo.composable.ComposableHangulJamoNode;
+import io.github.startsmercury.glomphosche.impl.client.node.hangul_jamo.HangulJamoStartNode;
 import it.unimi.dsi.fastutil.ints.IntObjectPair;
 import it.unimi.dsi.fastutil.objects.Object2BooleanFunction;
 import java.util.List;
@@ -24,7 +24,7 @@ public class GlomphoscheImpl extends BaseGlomphoscheImpl {
 
     public GlomphoscheImpl(final Minecraft minecraft) {
         super(minecraft);
-        this.root().inner().add(new ComposableHangulJamoNode());
+        this.root().inner().add(new HangulJamoStartNode());
         registerTagalog();
         registerHanunoo();
     }
